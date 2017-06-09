@@ -1,0 +1,242 @@
+<div class="body">
+  <div class="col-xs-12">
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <div class="row">
+        <div class="col-xs-3">
+          <div class="form-group">
+            <label for="first_name">First name</label>
+            <input
+              id="first_name"
+              type="text"
+              class="form-control"
+              formControlName="first_name"
+              required
+            >
+          </div>
+        </div>
+        <div class="col-xs-3">
+          <div class="form-group">
+            <label for="last_name">Last name</label>
+            <input
+              id="last_name"
+              type="text"
+              class="form-control"
+              formControlName="last_name"
+              required
+            >
+          </div>
+        </div>
+        <div class="col-xs-5" align="right">
+          <div class="form-group">
+            <label>Load data</label> <br>
+            <div class="btn-group">
+              <button type="button" class="btn btn-primary" (click)="onPrefill()">F</button>
+              <button type="button" class="btn btn-danger" (click)="onClear()">X</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-xs-4">
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input
+              id="email"
+              type="text"
+              class="form-control"
+              formControlName="email"
+              required
+              email
+            >
+          </div>
+        </div>
+      </div>
+
+
+      <div class="row">
+        <div class="col-xs-2">
+          <div class="form-group">
+            <label for="country">Country of residence</label>
+            <input
+              id="country"
+              type="text"
+              class="form-control"
+              formControlName="country"
+              required
+              email
+            >
+          </div>
+        </div>
+        <div class="col-xs-2">
+          <div class="form-group">
+            <label for="city">City</label>
+            <input
+              id="city"
+              type="text"
+              class="form-control"
+              formControlName="city"
+              required
+              email
+            >
+          </div>
+        </div>
+      </div>
+
+      <div formArrayName="educationList">
+        <label for="educationList" style="margin-top: 8px">What are you studying and where? *</label>
+        <div id='educationList'
+             class="row"
+             *ngFor="let educationCtrl of form.get('educationList')['controls']; let i = index"
+             style="margin-top: 8px"
+             [formGroupName]="i">
+          <div class="col-xs-4" style="margin: 1px">
+            <input type="text" class="form-control" placeholder="Institution" formControlName="institution">
+          </div>
+          <div class="col-xs-5">
+            <input type="text" class="form-control" placeholder="Speciality" formControlName="speciality">
+          </div>
+          <div class="col-xs-1">
+            <input type="text" class="form-control" placeholder="Year of completion" formControlName="year">
+          </div>
+          <div class="btn-group">
+            <button class="btn btn-success" type="button" (click)="onEducationItemAdded()">+</button>
+            <button class="btn btn-danger" type="button" (click)="onItemDeleted('educationList', i)">-</button>
+          </div>
+        </div>
+      </div>
+
+      <div formArrayName="workList">
+        <label for="workList" style="margin-top: 8px">If you have any previous degrees, work experience, or volunteer
+          activities let us know.</label>
+        <div id='workList'
+             class="row"
+             *ngFor="let workCtrl of form.get('workList')['controls']; let i = index"
+             style="margin-top: 8px"
+             [formGroupName]="i">
+          <div class="col-xs-3" style="margin: 1px">
+            <input type="text" class="form-control" placeholder="company" formControlName="company">
+          </div>
+          <div class="col-xs-5">
+            <input type="text" class="form-control" placeholder="position" formControlName="position">
+          </div>
+          <div class="col-xs-1">
+            <input type="text" class="form-control" placeholder="start date" formControlName="startDate">
+          </div>
+          <div class="col-xs-1">
+            <input type="text" class="form-control" placeholder="end date" formControlName="endDate">
+          </div>
+          <div class="btn-group">
+            <button class="btn btn-success" type="button" (click)="onWorkItemAdded()">+</button>
+            <button class="btn btn-danger" type="button" (click)="onItemDeleted('workList', i)">-</button>
+          </div>
+        </div>
+      </div>
+      <hr>
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="form-group">
+            <label for="passion">You're really passionate about ... </label>
+            <textarea
+              id="passion"
+              placeholder="Tell us what you care about, what you're interested in, what you believe in, what you hope to see in the world. (The more we have, the better the match)"
+              type="text"
+              rows="3"
+              class="form-control"
+              formControlName="passion"
+            >
+            </textarea>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="form-group" style="margin-top: 8px">
+            <label for="addedProposition">Additional skills you are willing to offer ...</label>
+            <textarea
+              id="addedProposition"
+              type="text"
+              class="form-control"
+              rows="4"
+              formControlName="addedProposition"
+              placeholder="Sometimes our matches are local businesses and they require specific assistance for the day. So if you have any skills in: photoshop, social media, marketing, web design, development, video work, translation etc. List them separated by commas ..."
+            >
+            </textarea>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="form-group">
+            <label for="interests">What fields or occupations are you most interested in?</label>
+            <textarea
+              id="interests"
+              type="text"
+              placeholder="e.g. law, business administration, enterpreneurship, development etc."
+              class="form-control"
+              rows="4"
+              formControlName="interests"
+            >
+            </textarea>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-xs-8">
+          <div class="form-group">
+            <label for="facebookP">Your Facebook profile is at ... *</label>
+            <input
+              id="facebookP"
+              type="text"
+              class="form-control"
+              formControlName="facebookP"
+              placeholder="http://www.facebook.com/..."
+              required
+            >
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-xs-8">
+          <div class="form-group">
+            <label for="linkedinP">Your LinkedIn profile is at ... *</label>
+            <input
+              id="linkedinP"
+              type="text"
+              class="form-control"
+              formControlName="linkedinP"
+              placeholder="http://www.linkedin.com/..."
+              required
+            >
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-xs-8">
+          <div class="form-group">
+            <label for="contact">You are best reached by ... *</label>
+            <input
+              id="contact"
+              type="text"
+              class="form-control"
+              formControlName="contact"
+              placeholder="e.g. WhatsApp at +37..., email, phone"
+              required>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-xs 12">
+          <button type="submit" class="btn btn-success">Submit</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

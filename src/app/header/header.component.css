@@ -1,0 +1,16 @@
+.navbar-default{
+  /*background-color: #284659;*/
+}
+
+.navbar-brand {
+  padding: 0px;
+}
+
+.navbar-brand>img {
+  height: 100%;
+  padding: 10px;
+  padding-left: 25px;
+  width: auto;
+}
+
+

@@ -1,0 +1,8 @@
+<label for="input">{{ label }}</label>
+<input
+  type="text"
+  id="input"
+  class="form-control"
+  [placeholder]="suggestion ? suggestion : ''"
+>
+<div *ngIf="trailing" class="text-muted">{{ trailing }}</div>

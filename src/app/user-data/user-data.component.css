@@ -1,0 +1,4 @@
+.completer-limit /deep/ .completer-dropdown {
+  overflow-y: auto;
+  max-height: 15rem;
+}
