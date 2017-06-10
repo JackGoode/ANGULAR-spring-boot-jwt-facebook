@@ -140,7 +140,7 @@ export class AuthService implements OnDestroy {
 
   getUserProfile() {
     const token = this.getAccessTokenOrRefresh();
-    this.userProfileSubscription = this.getUserProfileSubscription = this.http.get(this.getProfileUrl, {headers: this.getTokenHeaders(token)}).subscribe(
+    this.userProfileSubscription = this.http.get(this.getProfileUrl, {headers: this.getTokenHeaders(token)}).subscribe(
       (response: Response) => {
         const responseJson = response.json();
         const userData = new UserProfile(
