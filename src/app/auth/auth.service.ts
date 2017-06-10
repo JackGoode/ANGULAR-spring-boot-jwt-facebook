@@ -1,11 +1,13 @@
-import {Injectable} from "@angular/core";
+import {Injectable, OnDestroy} from "@angular/core";
 import {Headers, Http, Response} from "@angular/http";
 import {Subject} from "rxjs/Subject";
 import {UserProfile} from "../shared/user-profile.model";
 import {Router} from "@angular/router";
+import {Subscription} from "rxjs/Subscription";
 
 @Injectable()
-export class AuthService  {
+export class AuthService implements OnDestroy {
+
   token: string;
   refreshToken: string;
 
@@ -15,7 +17,16 @@ export class AuthService  {
   userProfileChanged = new Subject();
   userLoggedOut = new Subject();
 
-  baseUrl = 'http://localhost:9966/api/';
+  private loginSubscription = new Subscription();
+  private accessTokenSubscription = new Subscription();
+  private facebookLoginSubscription = new Subscription();
+  private getUserDataSubscription = new Subscription();
+  private saveUserDataSubscription = new Subscription();
+  private signUpSubscription = new Subscription();
+  private userProfileSubscription = new Subscription();
+  private refreshUserTokenSubscription = new Subscription();
+
+  private baseUrl = 'http://localhost:9966/api/';
 
   facebookLoginUrl = this.baseUrl + 'auth/facebookLogin';
   loginUrl = this.baseUrl + 'auth/login';
@@ -41,7 +52,7 @@ export class AuthService  {
       });
     const data = {'username': email, 'password': password};
 
-    this.http.post(this.loginUrl, data, {headers: headers})
+    this.loginSubscription = this.http.post(this.loginUrl, data, {headers: headers})
       .subscribe((response: Response) => {
         const responseJson = response.json();
         this.token = responseJson['token'];
@@ -56,7 +67,7 @@ export class AuthService  {
 
   getAccessTokenOrRefresh() {
     // Todo: run this check once in X minutes, not for every request
-    this.http.get(this.verifyUrl, {headers: this.getTokenHeaders(this.token)}).subscribe(
+    this.accessTokenSubscription = this.http.get(this.verifyUrl, {headers: this.getTokenHeaders(this.token)}).subscribe(
       (response: Response) => {
         const responseJson = response.json();
         console.log(responseJson);
@@ -88,7 +99,7 @@ export class AuthService  {
   }
 
   facebookLogin(accessToken: string) {
-    this.http.get(this.facebookLoginUrl, {headers: this.getFacebookTokenHeaders(accessToken)}).subscribe(
+    this.facebookLoginSubscription = this.http.get(this.facebookLoginUrl, {headers: this.getFacebookTokenHeaders(accessToken)}).subscribe(
       (response: Response) => {
         const responseJson = response.json();
         console.log('Token exchanged successfully');
@@ -104,7 +115,7 @@ export class AuthService  {
 
   getUserData() {
     const token = this.getAccessTokenOrRefresh();
-    this.http.get(this.fbDataUrl, {headers: this.getTokenHeaders(token)}).subscribe(
+    this.getUserDataSubscription = this.http.get(this.fbDataUrl, {headers: this.getTokenHeaders(token)}).subscribe(
       (response: Response) => {
         this.facebookDataLoaded.next(response);
       }
@@ -119,7 +130,7 @@ export class AuthService  {
         'Cache-Control': 'no-cache'
       });
     const token = this.getAccessTokenOrRefresh();
-    this.http.post(this.saveProfileUrl, JSON.stringify(userData), {headers: headers}).subscribe(
+    this.saveUserDataSubscription = this.http.post(this.saveProfileUrl, JSON.stringify(userData), {headers: headers}).subscribe(
       (response: Response) => {
         console.log(response);
         console.log('Form submitted');
@@ -129,7 +140,7 @@ export class AuthService  {
 
   getUserProfile() {
     const token = this.getAccessTokenOrRefresh();
-    this.http.get(this.getProfileUrl, {headers: this.getTokenHeaders(token)}).subscribe(
+    this.userProfileSubscription = this.getUserProfileSubscription = this.http.get(this.getProfileUrl, {headers: this.getTokenHeaders(token)}).subscribe(
       (response: Response) => {
         const responseJson = response.json();
         const userData = new UserProfile(
@@ -146,7 +157,7 @@ export class AuthService  {
       {
         'Cache-Control': 'no-cache'
       });
-    this.http.post(this.signUpUrl,
+    this.signUpSubscription = this.http.post(this.signUpUrl,
       {username: email, password: password},
       {headers: headers}).subscribe(
       (response: Response) => {
@@ -163,7 +174,7 @@ export class AuthService  {
   private refreshAccessToken() {
     if (this.refreshToken !== null) {
       console.log('token expired, requesting updated via refresh token');
-      this.http.get(this.refreshUrl, this.getTokenHeaders(this.refreshToken)).subscribe(
+      this.refreshUserTokenSubscription = this.http.get(this.refreshUrl, this.getTokenHeaders(this.refreshToken)).subscribe(
         (response: Response) => {
           const refreshResponse = response.json();
           this.token = refreshResponse['token'];
@@ -199,5 +210,17 @@ export class AuthService  {
   private navigateToLogin() {
     this.router.navigate(['signin']);
   }
+
+  ngOnDestroy(): void {
+    this.loginSubscription.unsubscribe();
+    this.accessTokenSubscription.unsubscribe();
+    this.facebookLoginSubscription.unsubscribe();
+    this.getUserDataSubscription.unsubscribe();
+    this.saveUserDataSubscription.unsubscribe();
+    this.signUpSubscription.unsubscribe();
+    this.userProfileSubscription.unsubscribe();
+    this.refreshUserTokenSubscription.unsubscribe();
+  }
+
 
 }
