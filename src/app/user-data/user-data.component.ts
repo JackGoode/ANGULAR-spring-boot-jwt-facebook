@@ -93,15 +93,8 @@ export class UserDataComponent implements OnInit {
       'email': new FormControl(this.entry.email),
       'country': new FormControl(this.entry.country),
       'city': new FormControl(this.entry.city),
-      'passion': new FormControl(this.entry.passion),
       'educationList': this.entry.educationList,
       'workList': this.entry.workList,
-      'helpProposition': new FormControl(this.entry.helpProposition),
-      'addedProposition': new FormControl(this.entry.addedProposition),
-      'interests': new FormControl(this.entry.interests),
-      'facebookP': new FormControl(this.entry.facebookP),
-      'linkedinP': new FormControl(this.entry.linkedinP),
-      'contact': new FormControl(this.entry.contact)
     });
   }
 
@@ -157,7 +150,6 @@ export class UserDataComponent implements OnInit {
       first_name: userData.first_name,
       last_name: userData.last_name,
       email: userData.email,
-      facebookP: userData.id,
       country: userData.location['country'],
       city: userData.location['city']
     });

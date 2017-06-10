@@ -5,7 +5,7 @@ import {UserProfile} from "../shared/user-profile.model";
 import {Router} from "@angular/router";
 
 @Injectable()
-export class AuthService {
+export class AuthService  {
   token: string;
   refreshToken: string;
 
@@ -16,15 +16,15 @@ export class AuthService {
   userLoggedOut = new Subject();
 
   baseUrl = 'http://localhost:9966/api/';
-  facebookLoginUrl = 'http://localhost:9966/facebookLogin';
 
+  facebookLoginUrl = this.baseUrl + 'auth/facebookLogin';
   loginUrl = this.baseUrl + 'auth/login';
   signUpUrl = this.baseUrl + 'signup';
-  refreshUrl = this.baseUrl + 'token';
   verifyUrl = this.baseUrl + 'me';
-  fbDataUrl = this.baseUrl + 'me/fbData';
+  refreshUrl = this.baseUrl + 'token';
   getProfileUrl = this.baseUrl + 'me/profile/get';
   saveProfileUrl = this.baseUrl + 'me/profile/save';
+  fbDataUrl = this.baseUrl + 'me/fbData';
 
   constructor(private router: Router,
               private http: Http) {
