@@ -28,14 +28,14 @@ export class AuthService implements OnDestroy {
 
   private baseUrl = 'http://localhost:9966/api/';
 
-  facebookLoginUrl = this.baseUrl + 'auth/facebookLogin';
+  facebookLoginUrl = this.baseUrl + 'fb/login';
   loginUrl = this.baseUrl + 'auth/login';
   signUpUrl = this.baseUrl + 'signup';
   verifyUrl = this.baseUrl + 'me';
   refreshUrl = this.baseUrl + 'token';
-  getProfileUrl = this.baseUrl + 'me/profile/get';
-  saveProfileUrl = this.baseUrl + 'me/profile/save';
-  fbDataUrl = this.baseUrl + 'me/fbData';
+  getProfileUrl = this.baseUrl + 'profile/get';
+  saveProfileUrl = this.baseUrl + 'profile/save';
+  fbDataUrl = this.baseUrl + 'fb/data';
 
   constructor(private router: Router,
               private http: Http) {
